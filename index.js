@@ -1,49 +1,87 @@
-function getComputerChoice() {
-    let rockPaperScissors = ['rock', 'paper', 'scissors'];
-    let computerChoice = rockPaperScissors[Math.floor(Math.random()
-        *rockPaperScissors.length)];
-    return computerChoice;
-}
+const rock = document.querySelector('#rock');
+const paper = document.querySelector('#paper');
+const scissors = document.querySelector('#scissors');
+const buttons = document.querySelectorAll('.btn');
+const playerText = document.querySelector('#playerText');
+const computerText = document.querySelector('#computerText');
+const resultText = document.querySelector('#resultText');
+const playAgain = document.querySelector('#playAgain');
+
+let userChoice;
+let computerChoice = getComputerChoice();
 
 let userScore = 0;
 let computerScore = 0;
 
-function game() {
-    for (let i = 0; i < 5; i++) {
-        function playRound(userChoice, computerChoice) {
-            if ((userChoice=='rock' && computerChoice=='scissors') || 
-            (userChoice=='paper' && computerChoice=='rock') || 
-            (userChoice=='scissors' && computerChoice=='paper')) {
-                userScore++;
-                return `You win! ${userChoice} beats ${computerChoice}`;
-            }
-            else if ((userChoice=='rock' && computerChoice=='paper') ||
-            (userChoice=='paper' && computerChoice=='scissors') ||
-            (userChoice=='scissors' && computerChoice=='rock')) {
-                computerScore++;
-                return `You lose! ${computerChoice} beats ${userChoice}`;
-            }
-            else if (userChoice==computerChoice) {
-                return 'There was a tie!';
-            }
-            else { return 'Oops! Something went wrong.'};
-        }
-        let userChoice = prompt('rock, paper, or scissors?:');
-        userChoice = userChoice.toLowerCase();
-        let computerChoice = getComputerChoice();
-        console.log(playRound(userChoice, computerChoice));
+playAgain.disabled = true;
+
+buttons.forEach(btn => btn.addEventListener('click', () => {
+    userChoice = btn.textContent;
+    computerChoice = getComputerChoice();
+    playerText.textContent = `player: ${userChoice}`;
+    computerText.textContent = `computer: ${computerChoice}`;
+    resultText.textContent = result();
+    if (userScore == 5 || computerScore == 5) {
+    resultText.textContent = endGame();
     }
-   if (userScore > computerScore) {
-       console.log('You won the game! Yay :)' + ` Your score: ${userScore}.
-       Opponent score: ${computerScore}.`)
-    }
-    else if (userScore == computerScore) {
-        console.log('There was a tie!' + `Your score: ${userScore}. 
-        Opponent score: ${computerScore}.`)
-    }
-    else {console.log('Game over. You lost :(' + ` Your score: ${userScore}.
-    Opponent score: ${computerScore}.`)}
+    
+}));
+
+const refreshPage = () => {
+    location.reload();
+  }
+  
+playAgain.addEventListener('click', refreshPage);
+
+function getComputerChoice() {
+    let rockPaperScissors = ['rock', 'paper', 'scissors'];
+    let computerPick = rockPaperScissors[Math.floor(Math.random()
+        *rockPaperScissors.length)];
+    return computerPick;
 }
 
-console.log(game());
+function result() { 
+   if (userChoice == computerChoice) {
+    userScore++;
+    computerScore++;
+    return `tie! your score: ${userScore}. computer score: ${computerScore}`;
+   }
+   else if ((userChoice=='rock' && computerChoice=='scissors') || 
+            (userChoice=='paper' && computerChoice=='rock') || 
+            (userChoice=='scissors' && computerChoice=='paper')) 
+            {
+                userScore++;
+                return `you win! your score: ${userScore}. computer score: ${computerScore}` ;
+    }
+    else if ((userChoice=='rock' && computerChoice=='paper') ||
+            (userChoice=='paper' && computerChoice=='scissors') ||
+            (userChoice=='scissors' && computerChoice=='rock')) 
+            {
+                computerScore++;
+                return `you lose! your score: ${userScore}. computer score: ${computerScore}`;
+
+    }
+ }
+
+ function disableButtons() {
+    buttons.forEach(btn => btn.disabled = true);
+ }
+
+ function endGame() {
+    if (userScore == 5 && computerScore < 5) {
+        disableButtons();
+        playAgain.disabled = false;
+        return "yay! you won the game :)";
+    }
+    else if (userScore < 5 && computerScore == 5) {
+        disableButtons();
+        playAgain.disabled = false;
+        return "you lost the game :(";
+    }
+    else if (userScore == 5 && computerScore == 5) {
+        disableButtons();
+        playAgain.disabled = false;
+        return "this game resulted in a tie";
+    }  
+ }
 
