@@ -4,7 +4,7 @@ const scissors = document.querySelector('#scissors');
 const buttons = document.querySelectorAll('.btn');
 const playerText = document.querySelector('#playerText');
 const computerText = document.querySelector('#computerText');
-const resultText = document.querySelector('#resultText');
+const scoreText = document.querySelector('#scoreText');
 const playAgain = document.querySelector('#playAgain');
 
 let userChoice;
@@ -20,9 +20,9 @@ buttons.forEach(btn => btn.addEventListener('click', () => {
     computerChoice = getComputerChoice();
     playerText.textContent = `player: ${userChoice}`;
     computerText.textContent = `computer: ${computerChoice}`;
-    resultText.textContent = result();
+    scoreText.textContent = result();
     if (userScore == 5 || computerScore == 5) {
-    resultText.textContent = endGame();
+    scoreText.textContent = endGame();
     }
     
 }));
@@ -44,21 +44,24 @@ function result() {
    if (userChoice == computerChoice) {
     userScore++;
     computerScore++;
-    return `tie! your score: ${userScore}. computer score: ${computerScore}`;
+    return `your score: ${userScore} |
+    computer score: ${computerScore}`;
    }
    else if ((userChoice=='rock' && computerChoice=='scissors') || 
             (userChoice=='paper' && computerChoice=='rock') || 
             (userChoice=='scissors' && computerChoice=='paper')) 
             {
                 userScore++;
-                return `you win! your score: ${userScore}. computer score: ${computerScore}` ;
+                return `your score: ${userScore} |
+                computer score: ${computerScore}` ;
     }
     else if ((userChoice=='rock' && computerChoice=='paper') ||
             (userChoice=='paper' && computerChoice=='scissors') ||
             (userChoice=='scissors' && computerChoice=='rock')) 
             {
                 computerScore++;
-                return `you lose! your score: ${userScore}. computer score: ${computerScore}`;
+                return `your score: ${userScore} |
+                computer score: ${computerScore}`;
 
     }
  }
